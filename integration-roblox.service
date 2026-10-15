@@ -1,0 +1,19 @@
+# systemd unit — copy to /etc/systemd/system/integration-roblox.service,
+# put the two secrets into /etc/integration-roblox.env (chmod 600):
+#   LH_INGEST_URL=https://dock.at-harbor.com/v1/ingest/123
+#   LH_INGEST_SECRET=…
+[Unit]
+Description=LinkHarbor Roblox agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/integration-roblox.env
+ExecStart=/usr/bin/python3 /opt/integration-roblox/agent.py --place-id 920587237 --name "My Experience" --url "https://discord.gg/xyz"
+Restart=always
+RestartSec=10
+User=nobody
+
+[Install]
+WantedBy=multi-user.target
